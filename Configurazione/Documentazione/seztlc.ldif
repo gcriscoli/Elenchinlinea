@@ -1,0 +1,4 @@
+dn:	ou=Sezione Supporto TLC,ou=RSIS C4,o=rsisc4,c=it
+ou:	Sezione Supporto TLC
+objectClass:	organizationalUnit
+objectClass:	top

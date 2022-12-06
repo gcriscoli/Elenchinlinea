@@ -1,0 +1,7 @@
+dn:	uid=syncrepl,ou=Personale,o=rsisc4,c=it
+uid:	syncrepl
+ou:	Personale
+userPassword:	1q2w3e4r
+description:	Nessuna descrizione
+objectClass:	account
+objectClass:	simpleSecurityObject

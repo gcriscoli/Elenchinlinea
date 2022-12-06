@@ -1,0 +1,188 @@
+dn:	o=example,c=it
+o:	example
+description:	Dominio di esempio preconfigurato in slapd.conf
+objectClass:	organization
+objectClass:	top
+
+dn:	o=RSIS C4,o=example,c=it
+o:	RSIS C4
+description:	Organizzazione di test realizzata dal RSIS C4 per verficare la replica di basi di dati LDAP
+objectClass:	organization
+objectClass:	top
+
+dn:	ou=People,o=RSIS C4,o=example,c=it
+ou:	People
+description:	Elenco del personale afferente all'organizzazione del RSIS C4
+objectClass:	organizationalUnit
+objectClass:	top
+
+dn:	ou=System,o=RSIS C4,o=example,c=it
+objectClass:	organizationalUnit
+objectClass:	top
+ou:	System
+
+dn:	uid=authenticator,ou=System,o=RSIS C4,o=example,c=it
+uid:	authenticator
+ou:	System
+description:	Utente utilizzato per l'autenticazione alla base dati
+userPassword:	authenticator
+objectClass:	account
+objectClass:	simpleSecurityObject
+
+dn:	ou=Groups,o=RSIS C4,o=example,c=it
+objectClass:	organizationalUnit
+objectClass:	top
+ou:	Groups
+
+dn:	ou=Struttura organica,o=RSIS C4,o=example,c=it
+ou:	Struttura organica
+objectClass:	organizationalUnit
+objectClass:	top
+
+dn:	ou=Struttura funzionale,o=RSIS C4,o=example,c=it
+ou:	Struttura funzionale
+objectClass:	organizarionalUnit
+objectClass:	top
+
+dn:	cn=Giovanni Di Pasquale,ou=People,o=RSIS C4,o=example,c=it
+cn:	Giovanni Di Pasquale
+givenName:	Giovanni
+sn:	Di Pasquale
+title:	Ten. Col.
+mail:	giovanni.dipasquale@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Giulio Criscoli,ou=People,o=RSIS C4,o=example,c=it
+cn:	Giulio Criscoli
+givenName:	Giulio
+sn:	Criscoli
+title:	Ten. Col.
+mail:	giulio.criscoli@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Rosario Pietro Privitera,ou=People,o=RSIS C4,o=example,c=it
+cn:	Rosario Pietro Privitera
+givenName:	Rosario Pietro
+sn:	Privitera
+title:	Magg.
+mail:	rosario.privitera@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Claudio Castorina,ou=People,o=RSIS C4,o=example,c=it
+cn:	Claudio Castorina
+givenName:	Claudio
+sn:	Castorina
+title:	Magg.
+mail:	rosario.privitera@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Francesco Sartorio,ou=People,o=RSIS C4,o=example,c=it
+cn:	Francesco Sartorio
+givenName:	Francesco
+sn:	Sartorio
+title:	Magg.
+mail:	francesco.sartorio@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Gianfranco Tomasello,ou=People,o=RSIS C4,o=example,c=it
+cn:	Gianfranco Tomasello
+givenName:	Gianfranco
+sn:	Tomasello
+title:	Magg.
+mail:	gianfranco.tomasello@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Giovanni Cipollitti,ou=People,o=RSIS C4,o=example,c=it
+cn:	Giovanni Cipollitti
+givenName:	Giovanni
+sn:	Cipollitti
+title:	1° Lgt.
+mail:	giovanni.cipollitti@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Vincenzo Bruno,ou=People,o=RSIS C4,o=example,c=it
+cn:	Vincenzo Bruno
+givenName:	Vincenzo
+sn:	Bruno
+title:	1° Lgt.
+mail:	vincenzo.bruno@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Guido Bacci,ou=People,o=RSIS C4,o=example,c=it
+cn:	Guido Bacci
+givenName:	Guido
+sn:	Bacci
+title:	1° Lgt.
+mail:	rosario.privitera@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Giuseppe Scifo,ou=People,o=RSIS C4,o=example,c=it
+cn:	Giuseppe Scifo
+givenName:	Giuseppe
+sn:	Scifo
+title:	Serg. Magg. Ca. QS
+mail:	giuseppe.scifo@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	cn=Pietro Battaglione,ou=People,o=RSIS C4,o=example,c=it
+cn:	Pietro Battaglione
+givenName:	Pietro
+sn:	Battaglione
+title:	Serg. Magg. Ca. QS
+mail:	pietro.battaglione@esercito.difesa.it
+objectCLass:	organizationalPerson
+objectClass:	person
+objectClass:	inetOrgPerson
+objectClass:	top
+
+dn:	ou=RSISC4,o=example,c=it
+ou:	RSISC4
+objectClass:	organizationalUnit
+objectClass:	top
+
+dn:	ou=Comandante,ou=RSISC4,o=example,c=it
+ou:	Comandante
+objectClass:	organizationalUnit
+objectClass:	top
+
+dn:	ou=Segreteria,ou=RSISC4,o=example,c=it
+ou:	Segreteria
+objectClass:	organizationalUnit
+objectClass:	top
+
+dn:	uid=syncrepl,ou=System,o=RSIS C4,o=example,c=it
+uid:	syncrepl
+ou:	System
+userPassword:	syncrepl
+objectClass:	account
+objectClass:	simpleSecurityObject
