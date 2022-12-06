@@ -1,0 +1,116 @@
+# GLOBAL
+dn:	cn=config
+cn:	config
+objectClass:	olcGlobal
+olcReferral:	ldap://root.openldap.org
+olcAllows:	bind_anon_cred bind_anon_dn
+olcArgsFile:	/usr/local/var/run/slapd/slapd.args
+olcPidFile:	/usr/local/var/run/slapd/slapd.pid
+olcGentleHUP:	FALSE
+olcIdleTimeout:	3
+olcIndexHash64:	off
+# LOGGING
+olcLogFile:	/var/log/openldap-debug.log
+olcLogFileFormat:	syslog-localtime
+olcLogFileOnly:	TRUE
+olcLogFileRotate:	5	100	0
+olcLogLevel:	conns BER config ACL stats shell parse sync
+
+# MODULES	OpenLDAP Software 2.6 Administrator's Guide, 5.2.3. cn=schema pg. 26
+dn:	cn=module,cn=config
+cn:	module
+objectClass:	olcModuleList
+olcModulePath:	/usr/local/libexec/openldap
+#olcModuleLoad:
+
+# SCHEMAS
+dn:	cn=schema,cn=config
+cn:	schema
+objectClass:	olcSchemaConfig
+
+include file:///usr/local/etc/openldap/schema/core.ldif
+include file:///usr/local/etc/openldap/schema/cosine.ldif
+include file:///usr/local/etc/openldap/schema/inetorgperson.ldif
+
+# BACKEND-SPECIFIC DIRECTIVES	OpenLDAP Software 2.6 Administrator's Guide, 5.2.4. Backend-specific Directives pg. 27
+dn:	olcBackend=mdb,cn=config
+objectclass:	olcBackendConfig
+olcBackend:	mdb
+olcBkMdbIdlExp:	16
+
+dn:	olcDatabase=frontend,dc=config
+objectClass:	olcDatabaseConfig
+objectClass:	olcFrontendConfig
+olcDatabase:	frontend
+olcReadOnly:	FALSE
+olcAccess:	to * by * read
+
+dn:	olcDatabase=config,dc=config
+objectClass:	olcDatabaseConfig
+olcDatabase:	config
+olcReadOnly:	FALSE
+olcRootPW:	Manager
+olcAccess:	to * by * none
+
+# DATABASE-SPECIFIC DIRECTIVES	OpenLDAP 2.6 Administrator's Guide, 5.2.5. Database-specific Directives pg. 27
+# Database type
+dn:	olcDatabase=mdb,cn=config
+objectClass:	olcDatabaseConfig
+objectClass:	olcMdbConfig
+olcDatabase:	mdb
+# Portion of the DIT to be served by this DB
+olcSuffix:	o=example,c=it
+olcDbDirectory:	/urs/local/var/openldap-data
+# Administrative credentials
+olcRootDN:	cn=Manager,o=example,c=it
+olcRootPW:	Manager
+olcDbIndex:	objectClass eq
+olcDbIndex:	cn sub,eq
+# ACLs
+olcAccess:	to attrs=userPassword
+	by anonymous auth
+	by self write
+	by * none
+olcAccess:	to *
+	by anonymous auth
+	by self write
+	by * none
+olcDbCheckpoint:	1024 10
+olcDbNosync:	FALSE
+# Connection limits
+olcSizeLimit:	10
+olcTimeLimit:	20
+olcReadOnly:	FALSE
+# Replication management
+#olcSyncRepl:	rid=<replicaID>
+	provider=ldap[s]://<hostname>[:<port>]
+	searchbase=<baseDN>
+	[type=refresh(Only|AndPersist)]
+	[interval=<dd:hh:mm:ss>]
+	[retry=[<retry interval> <nr. of retries>]+]
+	[filter=<filter string>]
+	[scope=(sub|one|base)]
+	[attrs=<attributes list>]
+	[sizelimit=<maximum nr. of entries to be replicated>]
+	[timelimit=<maximum duration in seconds that a search op should last prior to returning an "exceeded timelimit" error>]
+	[schemachecking=(on|off)]
+	[bindmethod=(simple|sasl)]
+	[binddn=<DN>]
+	[saslmech=<mechanism>]
+	[authcid=<identity>]
+	[authzid=<indentity>]
+	[credentials=<password>]
+	[realm=<realm>]
+	[secprops=<properties>]
+	[starttls=(yes|critical)]
+	[tls_cert=<file>]
+	[tls_key=<file>]
+	[tls_cacert=<file>]
+	[tls_cacertdir=<path>]
+	[tls_reqcert=(never|allow|try|demand)]
+	[tls_cipher_suite=<ciphers>]
+	[tls_crlcheck=(none|peer|all)]
+	[logbase=<base DN>]
+	[logfilter=<filter string>]
+	[syncdata=(default|accesslog|changelog)]
+#olcUpdateref:	URL
