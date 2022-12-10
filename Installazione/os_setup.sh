@@ -8,10 +8,12 @@ tput sgr0
 # Se le variabili d'ambiente non possono essere caricate, lo script esce con un codice d'errore non nullo
 if [[ -f './os_setup_sources/env_setup.sh' ]];
 then
+	chmod +x ./os_setup_sources/env_setup.sh
 	source './os_setup_sources/env_setup.sh'
-elif [[ -f '/usr/bin/os_setup_sources/env_setup' ]];
+elif [[ -f '/usr/bin/os_setup_sources/env_setup.sh' ]];
 then
-	source '/usr/bin/os_setup_sources/env_setup.sh')
+	chmod +x ./usr/bin/os_setup_sources/env_setup.sh
+	source '/usr/bin/os_setup_sources/env_setup.sh'
 else
 	printf "\n%s\n" "Le variabili d'ambiente non sono definite: impossibile proseguire."
 	exit 1
@@ -62,13 +64,13 @@ function printout_distros()
 	return 0
 }
 
-declare -a ACTIONS=( 'NTP' 'Hostname' 'Rete' 'Proxy' 'Firewall' 'SELinux' 'Uscire')
+declare -a CONFIGURATION_ITEMS=( 'NTP' 'Hostname' 'Rete' 'Proxy' 'Firewall' 'SELinux' 'Uscire')
 
 if [[ $OS_NAME == 'Red Hat Enterprise Linux' ]];
 then
-	ACTIONS+='Registrazione'
+	CONFIGURATION_ITEMS+='Registrazione'
 fi
-echo ${ACTIONS[@]}
+echo ${CONFIGURATION_ITEMS[@]}
 
 tput clear
 
@@ -77,43 +79,37 @@ printf "${BOLD}${RED}%s\n\n${NORMAL}" "CONFIGURAZIONE PRELIMINARE DEL SISTEMA"
 # Se la directory di lancio del presente script è diversa da quella di prevista installazione,
 if [[ ! $THIS_SCRIPT_DIRNAME == $OS_SETUP_SOURCES_DIR ]];
 then
-	# copia il presente script nella directory di installazione ed attribuiscigli i privilegi di esecuzione corretti
-	cp -f "${THIS_SCRIPT}" "${OS_SETUP_SCRIPT_DIR}" && chmod 770 "${OS_SETUP_SCRIPT}"
+	# copia il presente script nella directory di installazione e gli attribuisce i privilegi di esecuzione corretti
+	cp -f "${THIS_SCRIPT}" "${OS_SETUP_SCRIPT_DIR}" && chmod +x "${OS_SETUP_SCRIPT}"
 
-	# Inoltre, se la directory di lancio del presente script contiene una sottodirectory os_setup_sources,  attribuisci a tutto il suo contenuto i privilegi corretti
-	if [[ -d ${THIS_SCRIPT_SOURCES_DIRNAME} ]];
-	then
-		for SCRIPT in ${OS_SETUP_SOURCES_SCRIPTS[@]};
-		do
-			echo "${SCRIPT}..."
-			[[ -f ${SCRIPT} && ${SCRIPT} =~ ".*\.sh" ]] && chmod 770 "${THIS_SCRIPT_SOURCES_DIRNAME}/${SCRIPT}" && echo "Fatto!"
-		done
-	fi
+	# Inoltre, se la directory di lancio del presente script contiene una sottodirectory os_setup_sources,  attribuisce a tutto il suo contenuto i privilegi corretti
+	[[ -d ${THIS_SCRIPT_SOURCES_DIRNAME} ]] && chmod -R +x "${THIS_SCRIPT_SOURCES_DIRNAME}"
 fi
 
-# Se la directory di installazione non contiene una sottodirectory os_setup_scripts, creala
-[[ -d "${OS_SETUP_SOURCES_DIR}" ]] || mkdir -p "${OS_SETUP_SOURCES_DIR}"
-
-# Copia tutti i files contenuti nella directory os_setup_sources del percorso di lancio nella corrispondente del percorso di installazione ed attribuisci a tutti i files i privilegi di esecuzione corretti
-if [[ $(cp -fR "${THIS_SCRIPT_SOURCES_DIRNAME}" "${OS_SETUP_SOURCES_DIR}") ]];
+# Verifica dell'esistenza della directory di installazione degli script di configurazione o creazione della stessa con i privilegi corretti
+if [[ ! -d ${OS_SETUP_SOURCES_SCRIPT} ]];
 then
-	for SCRIPT in ${OS_SETUP_SOURCES_SCRIPTS[@]};
-		do
-			echo "${SCRIPT}..."
-			[[ -f ${SCRIPT} && ${SCRIPT} =~ ".*\.sh" ]] && chmod 770 "${OS_SETUP_SOURCES_DIR}*.sh" && echo "Fatto!"
-		done
+	mkdir -p ${OS_SETUP_SOURCES_DIR}
 fi
+chown -R "root:root" ${OS_SETUP_SOURCES_DIR}
 
-# Copia il file env_setup.sh nel percorso /etc/profile.d per farlo diventare una configurazione valida per tutti gli utenti
-[[ -f ${CONFIG_SCRIPTS[ENV]} ]] && cp -f ${CONFIG_SCRIPTS[ENV]} "/etc/profile.d/${CONFIG_SCRIPTS[ENV]}"
+chmod -R +x ${OS_SETUP_SOURCES_DIR}
+
+# Copia di tutti i files contenuti nella directory os_setup_sources del percorso di lancio nella corrispondente del percorso di installazione ed attribuzione a tutti i files dei privilegi di esecuzione corretti
+cp -fR "${THIS_SCRIPT_SOURCES_DIRNAME}" "${OS_SETUP_SCRIPT_DIR}" && chmod -R +x "${OS_SETUP_SOURCES_DIR}"
+
+# Se il collegamento al file env_setup.sh nel percorso /etc/profile.d non esiste, viene creato per farlo diventare una configurazione valida per tutti gli utenti
+[[ -f ${CONFIG_SCRIPTS[ENV]} ]] || ln -s ${CONFIG_SCRIPTS[ENV]} "/etc/profile.d/env_setup.sh"
 
 printf "%s\n" "Questa procedura permette di configurare ${BOLD}agevolmente${NORMAL} un server linux basato su:"
 printout_distros
 
-printf "%s\n" "Scegliere quale aspetto del server configurare:"
-select ACTION in ${ACTIONS[@]};
+printf "%s\t${RED}${BOLD}%s %s${NORMAL}\n" "Configurazione di un server Linux basato su:" "${THIS_OS_NAME}" "${THIS_OS_VERSION}"
+
+printf "\n%s\n" "Scegliere quale aspetto del server configurare:"
+select CONFIGURATION_ITEM in ${CONFIGURATION_ITEMS[@]};
 do
-	if [[ $ACTION == 'Uscire' ]];
+	if [[ $CONFIGURATION_ITEM == 'Uscire' ]];
 	then
 		printf "%s\n" "Riavviare il server per rendere effettive tutte le modifiche apportate?"
 		select REBOOT in 'Sì' 'No';
@@ -126,10 +122,10 @@ do
 			break
 		done
 	else
-		CONFIG_SCRIPT=${CONFIG_SCRIPTS[${ACTION}]}
+		CONFIG_SCRIPT=${CONFIG_SCRIPTS[${CONFIGURATION_ITEM}]}
 		if [[ -f ${CONFIG_SCRIPT} ]];
 		then
-			printf "\n${RED}${BOLD}%s%s${NORMAL}\n\n" "Configurazione d" "${NICE_SENTENCE[${ACTION}]}"
+			printf "\n${RED}${BOLD}%s%s${NORMAL}\n\n" "Configurazione d" "${NICE_SENTENCE[${CONFIGURATION_ITEM}]}"
 			source ${CONFIG_SCRIPT}
 		else
 			printf "${RED}${BOLD}%s${NORMAL}\n\n$s\n" "ATTENZIONE!!!" "Lo script di configurazione ${CONFIG_SCRIPT} non esiste nel percorso corrente"
